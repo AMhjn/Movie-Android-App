@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "95872594265",
+    "firebase_url": "https://abhir-movieapp-default-rtdb.firebaseio.com",
+    "project_id": "abhir-movieapp",
+    "storage_bucket": "abhir-movieapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95872594265:android:f9f6523d07767002841c48",
+        "android_client_info": {
+          "package_name": "com.abhir.mymovie_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO-eEHDv6y3gfrdan8vUfSrlpVR1v5BQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
