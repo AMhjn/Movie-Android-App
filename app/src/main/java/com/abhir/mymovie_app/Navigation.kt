@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Menu
@@ -153,7 +155,7 @@ fun MainContent(
                                             profileImageUri = fetchedUri
                                         },
                                         onError = { error ->
-                                            username = "Error: $error"
+                                            username = "User"
 
                                         }
                                     )
@@ -255,11 +257,6 @@ fun DrawerContent(
                 navController.navigate("now_playing")
                 scope.launch { drawerState.close() }
             })
-//            Spacer(modifier = Modifier.padding(8.dp))
-//            Text("Profile", modifier = Modifier.clickable {
-//                navController.navigate("profile")
-//                scope.launch { drawerState.close() }
-//            })
             Spacer(modifier = Modifier.padding(8.dp))
             Text("Popular", modifier = Modifier.clickable {
                 navController.navigate("home")
@@ -276,19 +273,7 @@ fun DrawerContent(
                 scope.launch { drawerState.close() }
             })
         }
-        Divider(modifier = Modifier.padding(vertical = 16.dp)) // Separator for Log Out
-        Text(
-            "Log Out",
-            modifier = Modifier
-                .clickable {
-                    auth.signOut()
-                    navController.navigate("login") {
-                        popUpTo("login") { inclusive = true } // Clear backstack
-                    }
-                    scope.launch { drawerState.close() }
-                }
-                .padding(top = 8.dp)
-        )
+
     }
 }
 
@@ -307,8 +292,9 @@ fun DrawerMenuItem(title: String, onClick: () -> Unit) {
 }
 
 
+// Fetching Username and profile Pic uri from firebase realtime database from userId
 fun fetchUserDataFromDB(
-    onSuccess: (String, String) -> Unit,
+    onSuccess: (String, String?) -> Unit,
     onError: (String) -> Unit
 ) {
     val currentUser = FirebaseAuth.getInstance().currentUser
@@ -327,9 +313,8 @@ fun fetchUserDataFromDB(
             val username = snapshot.child("username").getValue(String::class.java)
             val picUrl = snapshot.child("profileImageUri").getValue(String::class.java)
             if (username != null) {
-                if (picUrl != null) {
                     onSuccess(username, picUrl)
-                }
+
             } else {
                 onError("User")
             }

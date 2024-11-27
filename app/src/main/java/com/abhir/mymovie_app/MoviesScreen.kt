@@ -6,18 +6,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -61,18 +55,38 @@ fun MovieScreen(filter: String, navController: NavController) {
         }
     }
 
-    Text("Showing : $filter Movies", style = MaterialTheme.typography.titleMedium)
-
-    // Display movies in a LazyColumn
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        items(movies) { movie ->
-            MovieItem(movie, userId, favViewModel, navController)
+        // Static Text at the top
+        Text(
+            text = "Showing : $filter Movies",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp) // Add space below the Text
+        )
+
+        // LazyColumn for displaying movies
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1f) // Ensure LazyColumn takes the remaining space below Text
+        ) {
+            LazyColumn(
+                contentPadding = PaddingValues(0.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(movies) { movie ->
+                    MovieItem(movie, userId, favViewModel, navController)
+                }
+            }
         }
     }
+
+
 }
 
 @Composable
@@ -146,9 +160,34 @@ fun MovieItem(movie: Movie, userId: String, favoritesViewModel: FavoritesViewMod
 fun FavoriteScreen(navController: NavController, favoritesViewModel: FavoritesViewModel = viewModel()) {
     val favoriteMovies by favoritesViewModel.favorites.collectAsState()
 
-    LazyColumn(modifier = Modifier.padding(16.dp)) {
-        items(favoriteMovies) { movie ->
-            MovieItem(movie, userId, favoritesViewModel, navController)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        // Static Text at the top
+        Text(
+            text = "Showing : Favourite Movies",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp) // Add space below the Text
+        )
+
+        // LazyColumn for displaying movies
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1f) // Ensure LazyColumn takes the remaining space below Text
+        ) {
+            LazyColumn(
+                contentPadding = PaddingValues(0.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(favoriteMovies) { movie ->
+                    MovieItem(movie, userId, favoritesViewModel, navController)
+                }
+            }
         }
     }
 }
